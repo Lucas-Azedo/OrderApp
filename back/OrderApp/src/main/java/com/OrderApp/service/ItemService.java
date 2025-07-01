@@ -8,7 +8,10 @@ import com.OrderApp.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,5 +42,17 @@ public class ItemService {
                 .orElseThrow(() -> new ItemNotFound("Item not found" + id));
 
         return new ItemResponse(item.getId(), item.getName(), item.getDescription());
+    }
+
+    public List<ItemResponse> getAllItems(){
+        List<Item> list = new ArrayList<>(itemRepository.findAll());
+
+        return list.stream()
+                .map( item -> new ItemResponse(
+                      item.getId(),
+                      item.getName(),
+                      item.getDescription()
+                ))
+                .collect(Collectors.toList());
     }
 }
