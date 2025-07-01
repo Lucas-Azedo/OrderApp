@@ -1,19 +1,20 @@
 package com.OrderApp.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemResponse {
+public class ItemRequest {
 
-    UUID id;
-
+    @NotNull(message="Name is required")
     String name;
 
+    @NotNull(message="Description is required")
     String description;
+
 }
