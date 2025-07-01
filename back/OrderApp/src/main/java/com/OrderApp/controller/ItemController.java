@@ -36,4 +36,10 @@ public class ItemController {
         List<ItemResponse> res = itemService.getAllItems();
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable UUID id){
+        itemService.deleteItem(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -39,13 +39,13 @@ public class ItemService {
     public ItemResponse getItemById(UUID id){
 
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new ItemNotFound("Item not found" + id));
+                .orElseThrow(() -> new ItemNotFound("Item not found: " + id));
 
         return new ItemResponse(item.getId(), item.getName(), item.getDescription());
     }
 
     public List<ItemResponse> getAllItems(){
-        List<Item> list = new ArrayList<>(itemRepository.findAll());
+        List<Item> list = itemRepository.findAll();
 
         return list.stream()
                 .map( item -> new ItemResponse(
@@ -54,5 +54,12 @@ public class ItemService {
                       item.getDescription()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public void deleteItem(UUID id){
+        itemRepository.findById(id)
+                .orElseThrow(() -> new ItemNotFound("Item not found: " + id));
+
+        itemRepository.deleteById(id);
     }
 }
