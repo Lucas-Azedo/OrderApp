@@ -3,7 +3,7 @@ package com.OrderApp.controller;
 import com.OrderApp.dto.ItemResponse;
 import com.OrderApp.model.Item;
 import com.OrderApp.service.ItemService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/item")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ItemController {
 
-    ItemService itemService;
+    private final ItemService itemService;
 
     @PostMapping
     public ResponseEntity<ItemResponse> createItem(@RequestBody Item req){
