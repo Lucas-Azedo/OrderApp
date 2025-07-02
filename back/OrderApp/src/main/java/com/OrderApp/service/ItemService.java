@@ -32,7 +32,8 @@ public class ItemService {
         return new ItemResponse(
                 item.getId(),
                 item.getName(),
-                item.getDescription()
+                item.getDescription(),
+                item.getPrice()
         );
     }
 
@@ -48,7 +49,8 @@ public class ItemService {
         return new ItemResponse(
                 item.getId(),
                 item.getName(),
-                item.getDescription()
+                item.getDescription(),
+                item.getPrice()
         );
     }
 
@@ -57,7 +59,12 @@ public class ItemService {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFound("Item not found: " + id));
 
-        return new ItemResponse(item.getId(), item.getName(), item.getDescription());
+        return new ItemResponse(
+                item.getId(),
+                item.getName(),
+                item.getDescription(),
+                item.getPrice()
+        );
     }
 
     public List<ItemResponse> getAllItems(){
@@ -67,7 +74,8 @@ public class ItemService {
                 .map( item -> new ItemResponse(
                       item.getId(),
                       item.getName(),
-                      item.getDescription()
+                      item.getDescription(),
+                      item.getPrice()
                 ))
                 .collect(Collectors.toList());
     }

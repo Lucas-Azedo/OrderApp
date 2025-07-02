@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 
 @Data
 @AllArgsConstructor
@@ -12,9 +14,12 @@ import lombok.NoArgsConstructor;
 public class ItemRequest {
 
     @NotNull(message="Name is required")
-    String name;
+    private String name;
 
     @NotNull(message="Description is required")
-    String description;
+    private String description;
+
+    @NotNull(message="Price is required")
+    private BigDecimal price;
 
 }

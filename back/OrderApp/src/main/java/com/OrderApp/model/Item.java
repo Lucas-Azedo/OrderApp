@@ -3,6 +3,7 @@ package com.OrderApp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
@@ -15,11 +16,14 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.UUID)
-    UUID id;
+    private UUID id;
 
     @Column(nullable = false)
-    String name;
+    private String name;
 
     @Column(nullable = false)
-    String description;
+    private String description;
+
+    @Column(nullable = false)
+    private BigDecimal price;
 }
