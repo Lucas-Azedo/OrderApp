@@ -9,10 +9,10 @@ This project aims to deliver a Minimum Viable Product (MVP) for an online orderi
 ### Backend
 #### Admin
 
-- [ ] **Item CRUD**
+- [x] **Item CRUD**
   - [x] Create a new item
   - [x] List all items
-  - [ ] Update an existing item
+  - [x] Update an existing item
   - [x] Delete an item
 
 - [ ] **Order Management**
