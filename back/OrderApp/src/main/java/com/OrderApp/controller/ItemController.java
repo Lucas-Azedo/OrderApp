@@ -2,6 +2,7 @@ package com.OrderApp.controller;
 
 import com.OrderApp.dto.ItemRequest;
 import com.OrderApp.dto.ItemResponse;
+import com.OrderApp.model.Item;
 import com.OrderApp.service.ItemService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,12 @@ public class ItemController {
         ItemResponse res = itemService.createItem(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemResponse> updateItem(@PathVariable UUID id, @RequestBody @Valid ItemRequest req){
+        ItemResponse res = itemService.updateItem(id, req);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemResponse> getItemById(@PathVariable UUID id){
@@ -36,6 +43,7 @@ public class ItemController {
         List<ItemResponse> res = itemService.getAllItems();
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable UUID id){

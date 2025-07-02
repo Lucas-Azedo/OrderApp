@@ -8,6 +8,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Item {

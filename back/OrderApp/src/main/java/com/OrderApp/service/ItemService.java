@@ -36,6 +36,22 @@ public class ItemService {
         );
     }
 
+    public ItemResponse updateItem(UUID id, ItemRequest req){
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new ItemNotFound("Item not found: " + id));
+
+        item.setName(req.getName());
+        item.setDescription(req.getDescription());
+
+        itemRepository.save(item);
+
+        return new ItemResponse(
+                item.getId(),
+                item.getName(),
+                item.getDescription()
+        );
+    }
+
     public ItemResponse getItemById(UUID id){
 
         Item item = itemRepository.findById(id)
