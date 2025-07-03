@@ -68,9 +68,9 @@ public class ItemService {
     }
 
     public List<ItemResponse> getAllItems(){
-        List<Item> list = itemRepository.findAll();
+        List<Item> items = itemRepository.findAll();
 
-        return list.stream()
+        return items.stream()
                 .map( item -> new ItemResponse(
                       item.getId(),
                       item.getName(),
