@@ -80,6 +80,11 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
+    public Item getItemEntityById(UUID id) {
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new ItemNotFound("Item not found: " + id));
+    }
+
     public void deleteItem(UUID id){
         itemRepository.findById(id)
                 .orElseThrow(() -> new ItemNotFound("Item not found: " + id));
