@@ -15,9 +15,9 @@ This project aims to deliver a Minimum Viable Product (MVP) for an online orderi
   - [x] Update an existing item
   - [x] Delete an item
 
-- [ ] **Order Management**
-  - [ ] View all user orders
-  - [ ] View order details
+- [x] **Order Management**
+  - [x] View all user orders
+  - [x] View order details
 
 ---
 
