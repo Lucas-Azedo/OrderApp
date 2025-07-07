@@ -37,4 +37,16 @@ public class OrderController {
         List<OrderResponse> res = orderService.getAllOrders();
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrderById(@PathVariable UUID id){
+        orderService.deleteOrderById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllOrders(){
+        orderService.deleteAllOrders();
+        return ResponseEntity.noContent().build();
+    }
 }

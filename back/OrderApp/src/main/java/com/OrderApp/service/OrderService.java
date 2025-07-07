@@ -98,4 +98,15 @@ public class OrderService {
                         order.getDeliveryAddress()
                 )).toList();
     }
+
+    public void deleteOrderById(UUID id){
+        orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFound("Order not found: " + id));
+
+        orderRepository.deleteById(id);
+    }
+
+    public void deleteAllOrders(){
+        orderRepository.deleteAll();
+    }
 }
