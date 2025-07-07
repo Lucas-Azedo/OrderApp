@@ -11,7 +11,7 @@ import com.OrderApp.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,20 +27,29 @@ public class OrderService {
         order.setCustomerName(req.getCustomerName());
         order.setDeliveryAddress(req.getDeliveryAddress());
 
-        List<OrderItem> orderItems = req.getItems().stream().map(itemRequest -> {
+        List<OrderItem> orderItems = req.getOrderItems().stream().map(itemRequest -> {
             OrderItem orderItem = new OrderItem();
 
             Item item = itemService.getItemEntityById(itemRequest.getItemId());
 
+            int quantity = itemRequest.getQuantity();
+
+            BigDecimal price = item.getPrice().multiply((BigDecimal.valueOf(quantity)));
+
             orderItem.setItem(item);
             orderItem.setQuantity(itemRequest.getQuantity());
-            orderItem.setPriceAtOrderTime(itemRequest.getPriceAtOrderTime());
+            orderItem.setPriceAtOrderTime(price);
             orderItem.setOrder(order);
 
             return orderItem;
         }).toList();
 
+        BigDecimal orderAmount = orderItems.stream()
+                .map(OrderItem::getPriceAtOrderTime)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         order.setOrderItems(orderItems);
+        order.setOrderAmount(orderAmount);
 
         orderRepository.save(order);
 
@@ -56,7 +65,8 @@ public class OrderService {
                 order.getId(),
                 itemResponses,
                 order.getCustomerName(),
-                order.getDeliveryAddress()
+                order.getDeliveryAddress(),
+                order.getOrderAmount()
         );
     }
 
@@ -77,7 +87,8 @@ public class OrderService {
                 order.getId(),
                 itemResponses,
                 order.getCustomerName(),
-                order.getDeliveryAddress()
+                order.getDeliveryAddress(),
+                order.getOrderAmount()
         );
     }
     
@@ -95,7 +106,8 @@ public class OrderService {
                                                 orderItem.getPriceAtOrderTime()
                                         )).toList(),
                         order.getCustomerName(),
-                        order.getDeliveryAddress()
+                        order.getDeliveryAddress(),
+                        order.getOrderAmount()
                 )).toList();
     }
 

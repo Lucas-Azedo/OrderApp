@@ -24,6 +24,7 @@ public class ItemService {
         Item item = Item.builder()
                 .name(req.getName())
                 .description(req.getDescription())
+                .price(req.getPrice())
                 .build();
 
 

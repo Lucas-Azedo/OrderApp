@@ -1,7 +1,8 @@
 package com.OrderApp.dto;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequest {
 
-    @Min(value = 1, message = "Adicione pelo menos um item")
-    private List<OrderItemResponse> items;
+    @NotEmpty(message = "Adicione pelo menos um item")
+    @Valid
+    private List<OrderItemRequest> orderItems;
 
     @NotBlank(message = "Nome é obrigatório")
     private String customerName;
