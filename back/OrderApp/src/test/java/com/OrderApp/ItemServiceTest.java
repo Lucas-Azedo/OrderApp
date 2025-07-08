@@ -6,9 +6,13 @@ import com.OrderApp.exception.businessException.ItemNotFound;
 import com.OrderApp.model.Item;
 import com.OrderApp.repository.ItemRepository;
 import com.OrderApp.service.ItemService;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -24,6 +28,18 @@ public class ItemServiceTest {
 
     @InjectMocks
     ItemService itemService;
+
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    public void setup() {
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception{
+        closeable.close();
+    }
 
     @Test
     public void testCreateItem_ShouldReturnItemResponse() {
