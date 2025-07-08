@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +31,7 @@ public class ItemServiceTest {
         BigDecimal price = new BigDecimal(40);
         UUID id = UUID.randomUUID();
 
-        ItemRequest req = new ItemRequest("Cheeseburguer", "Queijo molho especial", price);
+        ItemRequest req = new ItemRequest("Item", "Desc", price);
 
         Item savedItem = Item.builder()
                 .id(id)
@@ -48,11 +49,46 @@ public class ItemServiceTest {
         // Assert
         assertNotNull(res);
         assertEquals(id, res.getId());
-        assertEquals("Cheeseburguer", res.getName());
-        assertEquals("Queijo molho especial", res.getDescription());
+        assertEquals("Item", res.getName());
+        assertEquals("Desc", res.getDescription());
         assertEquals(price, res.getPrice());
 
         verify(itemRepository, times(1)).save(any(Item.class));
+    }
+
+    @Test
+    public void testUpdateItem_ShouldUpdateReturnItemResponse(){
+        // Arrange
+        UUID id = UUID.randomUUID();
+        BigDecimal price = new BigDecimal("29.90");
+
+        Item existingItem = Item.builder()
+                .id(id)
+                .name("Old name")
+                .description("Old desc")
+                .price(price)
+                .build();
+
+        ItemRequest req = new ItemRequest("New name", "New desc", price);
+
+        when(itemRepository.findById(id))
+                .thenReturn(Optional.of(existingItem));
+
+        when(itemRepository.save(existingItem)).
+                thenReturn(existingItem);
+
+        // Act
+        ItemResponse res = itemService.updateItem(id, req);
+
+        // Assert
+        assertNotNull(res);
+        assertEquals(id, res.getId());
+        assertEquals("New name", res.getName());
+        assertEquals("New desc", res.getDescription());
+        assertEquals(price, res.getPrice());
+
+        verify(itemRepository, times(1)).findById(id);
+        verify(itemRepository, times(1)).save(existingItem);
     }
 }
 
