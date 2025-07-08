@@ -26,7 +26,7 @@ jobs:
         run: docker compose up --build -d
 
       - name: Wait for app to be health #NEED TO IMPROVE THIS 
-        run: sleep 20
+        run: sleep 10
 
       - name: Verify Containers
         run: docker ps
