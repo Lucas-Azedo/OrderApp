@@ -2,6 +2,7 @@ package com.OrderApp;
 
 import com.OrderApp.dto.ItemRequest;
 import com.OrderApp.dto.ItemResponse;
+import com.OrderApp.exception.businessException.ItemNotFound;
 import com.OrderApp.model.Item;
 import com.OrderApp.repository.ItemRepository;
 import com.OrderApp.service.ItemService;
@@ -13,8 +14,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ItemServiceTest {
@@ -28,7 +28,7 @@ public class ItemServiceTest {
     @Test
     public void testCreateItem_ShouldReturnItemResponse() {
         // Arrange
-        BigDecimal price = new BigDecimal(40);
+        BigDecimal price = new BigDecimal("19.90");
         UUID id = UUID.randomUUID();
 
         ItemRequest req = new ItemRequest("Item", "Desc", price);
@@ -90,5 +90,58 @@ public class ItemServiceTest {
         verify(itemRepository, times(1)).findById(id);
         verify(itemRepository, times(1)).save(existingItem);
     }
+
+    @Test
+    public void testGetItemById_ShouldReturnItemResponse_WhenItemExists() {
+        // Arrange
+        UUID id = UUID.randomUUID();
+        BigDecimal price = new BigDecimal("39.90");
+
+        Item item = Item.builder()
+                .id(id)
+                .name("Name")
+                .description("Desc")
+                .price(price)
+                .build();
+
+        when(itemRepository.findById(id)).thenReturn(Optional.of(item));
+
+        // Act
+        ItemResponse response = itemService.getItemById(id);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(id, response.getId());
+        assertEquals("Name", response.getName());
+        assertEquals("Desc", response.getDescription());
+        assertEquals(price, response.getPrice());
+
+        verify(itemRepository, times(1)).findById(id);
+    }
+
+    @Test
+    public void testGetItemById_ShouldThrowException_WhenItemNotFound() {
+        // Arrange
+        UUID id = UUID.randomUUID();
+
+        when(itemRepository.findById(id)).thenReturn(Optional.empty());
+
+        // Act
+        ItemNotFound e = null;
+        try {
+            itemService.getItemById(id);
+            fail("Expected ItemNotFound exception");
+        } catch (ItemNotFound ex) {
+            e = ex;
+        }
+
+        // Assert
+        assertNotNull(e);
+        assertTrue(e.getMessage().contains("Item not found: " + id));
+
+        verify(itemRepository, times(1)).findById(id);
+    }
+
+
 }
 
