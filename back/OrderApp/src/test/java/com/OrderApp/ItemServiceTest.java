@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -107,6 +109,21 @@ public class ItemServiceTest {
     }
 
     @Test
+    public void testUpdateItem_ShouldThrowException_WhenItemNotFound() {
+        UUID id = UUID.randomUUID();
+        ItemRequest req = new ItemRequest("Name", "Desc", new BigDecimal("19.90"));
+
+        when(itemRepository.findById(id))
+                .thenReturn(Optional.empty());
+
+        ItemNotFound exception = assertThrows(ItemNotFound.class, () -> {
+            itemService.updateItem(id, req);
+        });
+
+        assertTrue(exception.getMessage().contains("Item not found: " + id));
+    }
+
+    @Test
     public void testGetItemById_ShouldReturnItemResponse_WhenItemExists() {
         // Arrange
         UUID id = UUID.randomUUID();
@@ -155,7 +172,53 @@ public class ItemServiceTest {
     }
 
     @Test
-    public void deleteItem_ShouldDeleteItem_WhenItemExists(){
+    public void getAllItems_ShouldReturnListOfItemResponses() {
+        // Arrange
+        List<Item> items = List.of(
+                Item.builder().id(UUID.randomUUID()).name("Item1").description("Desc1").price(new BigDecimal("10.00")).build(),
+                Item.builder().id(UUID.randomUUID()).name("Item2").description("Desc2").price(new BigDecimal("20.00")).build()
+        );
+
+        when(itemRepository.findAll()).thenReturn(items);
+
+        // Act
+        List<ItemResponse> responses = itemService.getAllItems();
+
+        // Assert
+        assertEquals(2, responses.size());
+        assertEquals("Item1", responses.get(0).getName());
+        assertEquals("Item2", responses.get(1).getName());
+    }
+
+    @Test
+    public void testGetAllItems_ShouldReturnEmptyList_WhenNoItemsExist() {
+        //Arrange
+        when(itemRepository.findAll()).thenReturn(new ArrayList<>());
+
+        //Act
+        List<ItemResponse> responses = itemService.getAllItems();
+
+        //Assert
+        assertNotNull(responses);
+        assertTrue(responses.isEmpty());
+    }
+
+    @Test
+    public void testGetItemEntityById_ShouldReturnItem_WhenItemExists() {
+        UUID id = UUID.randomUUID();
+        Item item = Item.builder().id(id).name("Item").description("Desc").price(new BigDecimal("15.00")).build();
+
+        when(itemRepository.findById(id)).thenReturn(Optional.of(item));
+
+        Item result = itemService.getItemEntityById(id);
+
+        assertNotNull(result);
+        assertEquals(id, result.getId());
+        assertEquals("Item", result.getName());
+    }
+
+    @Test
+    public void testDeleteItem_ShouldDeleteItem_WhenItemExists(){
         //Arrange
         UUID id = UUID.randomUUID();
         BigDecimal price = new BigDecimal("39.90");
@@ -170,7 +233,7 @@ public class ItemServiceTest {
         when(itemRepository.findById(id))
                 .thenReturn(Optional.of(item));
 
-        doNothing().when(itemRepository).delete(item);
+        doNothing().when(itemRepository).deleteById(id);
 
         //Act
         itemService.deleteItem(id);
@@ -181,7 +244,7 @@ public class ItemServiceTest {
     }
 
     @Test
-    public void deleteItem_ShouldThrowException_WhenItemNotFound(){
+    public void testDeleteItem_ShouldThrowException_WhenItemNotFound(){
         // Arrange
         UUID id = UUID.randomUUID();
 
