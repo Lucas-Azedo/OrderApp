@@ -9,9 +9,11 @@ import com.OrderApp.service.ItemService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class ItemServiceTest {
 
     @Mock
@@ -29,18 +32,6 @@ public class ItemServiceTest {
 
     @InjectMocks
     ItemService itemService;
-
-    private AutoCloseable closeable;
-
-    @BeforeEach
-    public void setup() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception{
-        closeable.close();
-    }
 
     @Test
     public void testCreateItem_ShouldReturnItemResponse() {
