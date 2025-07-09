@@ -6,7 +6,6 @@ import com.OrderApp.exception.businessException.ItemNotFound;
 import com.OrderApp.model.Item;
 import com.OrderApp.repository.ItemRepository;
 import com.OrderApp.service.ItemService;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -140,23 +139,63 @@ public class ItemServiceTest {
         // Arrange
         UUID id = UUID.randomUUID();
 
-        when(itemRepository.findById(id)).thenReturn(Optional.empty());
+        when(itemRepository.findById(id))
+                .thenReturn(Optional.empty());
 
-        // Act
-        ItemNotFound e = null;
-        try {
+        //Act & Assert
+        ItemNotFound exception = assertThrows(ItemNotFound.class, () -> {
             itemService.getItemById(id);
-            fail("Expected ItemNotFound exception");
-        } catch (ItemNotFound ex) {
-            e = ex;
-        }
+        });
 
         // Assert
-        assertNotNull(e);
-        assertTrue(e.getMessage().contains("Item not found: " + id));
+        assertNotNull(exception);
+        assertTrue(exception.getMessage().contains("Item not found: " + id));
 
         verify(itemRepository, times(1)).findById(id);
     }
+
+    @Test
+    public void deleteItem_ShouldDeleteItem_WhenItemExists(){
+        //Arrange
+        UUID id = UUID.randomUUID();
+        BigDecimal price = new BigDecimal("39.90");
+
+        Item item = Item.builder()
+                .id(id)
+                .name("Name")
+                .description("Desc")
+                .price(price)
+                .build();
+
+        when(itemRepository.findById(id))
+                .thenReturn(Optional.of(item));
+
+        doNothing().when(itemRepository).delete(item);
+
+        //Act
+        itemService.deleteItem(id);
+
+        //Assert
+        verify(itemRepository, times(1)).findById(id);
+        verify(itemRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void deleteItem_ShouldThrowException_WhenItemNotFound(){
+        // Arrange
+        UUID id = UUID.randomUUID();
+
+        //Act & Assert
+        ItemNotFound exception = assertThrows(ItemNotFound.class, () -> {
+            itemService.deleteItem(id);
+        });
+
+
+        assertTrue(exception.getMessage().contains("Item not found: " + id));
+    }
+
+
+
 
 
 }
