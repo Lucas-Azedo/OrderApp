@@ -36,11 +36,11 @@ public class OrderServiceTest {
     @Mock
     private ItemRepository itemRepository;
 
-    @InjectMocks
-    OrderService orderService;
+    @Mock
+    ItemService itemService;
 
     @InjectMocks
-    ItemService itemService;
+    OrderService orderService;
 
     @Test
     public void testCreateOrder_ShouldReturnOrderResponse() {
