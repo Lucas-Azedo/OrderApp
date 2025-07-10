@@ -4,6 +4,74 @@ This project aims to deliver a Minimum Viable Product (MVP) for an online orderi
 
 ---
 
+## JSON
+
+### Request
+#### Order
+```json
+{
+  "orderItems": [
+    {
+      "itemId": "a1b2c3d4-e5f6-7890-1234-56789abcdef0",
+      "quantity": 2
+    },
+    {
+      "itemId": "0fedcba9-8765-4321-0fed-cba987654321",
+      "quantity": 1
+    }
+  ],
+  "customerName": "João da Silva",
+  "deliveryAddress": "Rua das Flores, 123, São Paulo - SP"
+}
+```
+
+#### Item
+```json
+{
+  "name": "Hambúrguer Artesanal",
+  "description": "Hambúrguer com carne 100% Angus, pão brioche e queijo cheddar",
+  "price": 29.90
+}
+
+```
+
+### Response
+#### Order
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "items": [
+    {
+      "itemId": "a1b2c3d4-e5f6-7890-1234-56789abcdef0",
+      "name": "Hambúrguer Artesanal",
+      "price": 29.90,
+      "quantity": 2
+    },
+    {
+      "itemId": "0fedcba9-8765-4321-0fed-cba987654321",
+      "name": "Suco Natural",
+      "price": 9.50,
+      "quantity": 1
+    }
+  ],
+  "customerName": "João da Silva",
+  "deliveryAddress": "Rua das Flores, 123, São Paulo - SP",
+  "orderAmount": 69.30
+}
+```
+
+#### Item
+```json
+{
+  "id": "d1f80a97-8b6a-4c51-bf36-0a6f66b09d23",
+  "name": "Hambúrguer Artesanal",
+  "description": "Hambúrguer com carne 100% Angus, pão brioche e queijo cheddar",
+  "price": 29.90
+}
+```
+
+---
+
 ## Feature Checklist
 
 ### Backend
@@ -23,11 +91,11 @@ This project aims to deliver a Minimum Viable Product (MVP) for an online orderi
 
 #### User
 
-- [ ] **Place an Order**
-  - [ ] View available items
-  - [ ] Select one or more items
-  - [ ] Provide required order details (e.g., name, address, notes)
-  - [ ] Confirm and submit order
+- [x] **Place an Order**
+  - [x] View available items
+  - [x] Select one or more items
+  - [x] Provide required order details (e.g., name, address, notes)
+  - [x] Confirm and submit order
 
 ### Frontend
 #### Admin Interface
