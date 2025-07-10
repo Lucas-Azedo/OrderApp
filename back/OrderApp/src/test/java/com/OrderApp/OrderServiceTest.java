@@ -17,9 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +55,7 @@ public class OrderServiceTest {
                 .build();
 
         OrderItemRequest itemRequest = new OrderItemRequest(itemId, quantity);
-        OrderRequest orderRequest = new OrderRequest(customerName, address, List.of(itemRequest));
+        OrderRequest orderRequest = new OrderRequest(List.of(itemRequest), customerName, address);
 
         when(itemService.getItemEntityById(itemId))
                 .thenReturn(item);
@@ -79,7 +77,7 @@ public class OrderServiceTest {
         assertEquals(new BigDecimal("20.00"), response.getOrderAmount());
 
         assertEquals(1, response.getItems().size());
-        OrderItemResponse itemRes = response.getItems().get(0);
+        OrderItemResponse itemRes = response.getItems().getFirst();
 
         assertEquals(itemId, itemRes.getItemId());
         assertEquals("Produto A", itemRes.getItemName());
