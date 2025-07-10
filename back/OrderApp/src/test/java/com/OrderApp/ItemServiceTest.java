@@ -6,13 +6,10 @@ import com.OrderApp.exception.businessException.ItemNotFound;
 import com.OrderApp.model.Item;
 import com.OrderApp.repository.ItemRepository;
 import com.OrderApp.service.ItemService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;

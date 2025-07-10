@@ -6,6 +6,7 @@ import com.OrderApp.dto.OrderRequest;
 import com.OrderApp.dto.OrderResponse;
 import com.OrderApp.model.Item;
 import com.OrderApp.model.Order;
+import com.OrderApp.repository.ItemRepository;
 import com.OrderApp.repository.OrderRepository;
 import com.OrderApp.service.ItemService;
 import com.OrderApp.service.OrderService;
@@ -31,6 +32,9 @@ public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private ItemRepository itemRepository;
 
     @InjectMocks
     OrderService orderService;
