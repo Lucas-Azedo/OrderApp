@@ -1,0 +1,4 @@
+@plugin "daisyui" {
+	themes: light --default, dark --prefersdark, cupcake, retro, valentine, business, coffee, nord;
+	root: ":root";
+}
